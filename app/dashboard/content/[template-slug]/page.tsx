@@ -7,7 +7,7 @@ import  Templates  from '@/app/(data)/Templates'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { GoogleGenAI } from "@google/genai"
+import { GoogleGenerativeAI } from "@google/generative-ai"
 import { useState } from "react";
 import { db } from '@/utils/db'
 import { useUser } from '@clerk/nextjs'
@@ -35,12 +35,7 @@ interface props{
     }
 }
 
-// For Next.js App Router, use the experimental 'use' hook to unwrap params if available
-// Fallback to direct access for backward compatibility
-const use = (React as any).use || ((p: any) => p);
-
-function CreateNewContent(props:props) {
-    const params = use(props.params);
+function CreateNewContent({params}:props) {
     const selectedTemplate:Template|undefined = Templates?.find((item) => item.slug == params['template-slug']);
     const[loading,setLoading] = useState(false);
     const [showAlertDialog, setShowAlertDialog] = useState(false);
@@ -64,29 +59,33 @@ function CreateNewContent(props:props) {
       }
       const SelectedPrompt = selectedTemplate?.aiPrompt;
       const FinalAIPrompt = JSON.stringify(formData) + ", " + SelectedPrompt + ". Return the result as HTML only, using tags like <b>, <ul>, <li>, <p> as appropriate for rich text editors. Do not use markdown, code blocks, or RTF. Do not wrap everything in a single <p> or <ul> unless it is semantically correct. The output should be ready to render in a WYSIWYG editor.";
-      const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: FinalAIPrompt,
-      });
-      const html = response.text || '';
-      console.log(html);
-      setAIOutput(html);
-      await SaveInDb(formData, selectedTemplate?.slug, html, user.primaryEmailAddress.emailAddress);
+      const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY!);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+      const result = await model.generateContent(FinalAIPrompt);
+      const response = await result.response;
+      const text = response.text();
+      setAIOutput(text);
+      await SaveInDb(JSON.stringify(formData),selectedTemplate?.slug,text)
       setLoading(false);
-      setUpdateCreditUsage(Date.now());
+      setUpdateCreditUsage(Date.now())
     } 
 
-    const SaveInDb = async(formData:any, slug:any, AIResponse:string, createdBy:string) => {
-      const result = await db.insert(AIOutputTable).values({
-        formData: typeof formData === 'string' ? formData : JSON.stringify(formData),
-        aiResponse: AIResponse || '',
-        templateSlug: slug || '',
-        createdBy: createdBy || '',
-        createdAt: moment().format('DD-MM-YYYY HH:mm:ss')
+    const SaveInDb=async(formData:any,slug:any,aiResponse:string)=>{
+      if (!user?.primaryEmailAddress?.emailAddress) {
+        // Handle the case where user information is not available
+        console.error("User information not available, cannot save to DB.");
+        return;
+      }
+      const result=await db.insert(AIOutputTable).values({
+          formData:formData,
+          templateSlug:slug,
+          aiResponse:aiResponse,
+          createdBy:user.primaryEmailAddress.emailAddress,
+          createdAt:moment().format('DD/MM/yyyy'),
       });
+
       console.log(result);
-    }
+  }
   return (
     <div className='p-5'>
       <AlertDialog open={showAlertDialog}>

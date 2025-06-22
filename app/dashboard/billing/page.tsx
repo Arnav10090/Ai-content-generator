@@ -17,7 +17,7 @@ const plans = [
         price: '0$',
         period: '/month',
         features: [
-            '10,000 Words/Month',
+            '10,000 Credits/Month',
             '50+ Content Templates',
             'Unlimited Download & Copy',
             '1 Month of History',
@@ -28,7 +28,7 @@ const plans = [
         price: '5.76$',
         period: '/month',
         features: [
-            '1,00,000 Words/Month',
+            '1,00,000 Credits/Month',
             '50+ Template Access',
             'Unlimited Download & Copy',
             '1 Year of History',
@@ -40,7 +40,7 @@ const plans = [
         price: '63.53$',
         period: '/year',
         features: [
-            '12,00,000 Words/Year',
+            '12,00,000 Credits/Year',
             '50+ Template Access',
             'Unlimited Download & Copy',
             '2 Years of History',
