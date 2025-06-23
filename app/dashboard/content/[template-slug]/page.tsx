@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { use } from 'react'
 import FormSection from './_components/FormSection'
 import OutputSection from './_components/OutputSection'
 import { Template } from '../../_components/TemplateListSection'
@@ -35,8 +35,13 @@ interface props{
     }
 }
 
+function isPromise<T>(value: T | Promise<T>): value is Promise<T> {
+    return typeof (value as any)?.then === 'function';
+}
+
 function CreateNewContent({params}:props) {
-    const selectedTemplate:Template|undefined = Templates?.find((item) => item.slug == params['template-slug']);
+    const unwrappedParams = isPromise(params) ? use(params) : params;
+    const selectedTemplate:Template|undefined = Templates?.find((item) => item.slug == unwrappedParams['template-slug']);
     const[loading,setLoading] = useState(false);
     const [showAlertDialog, setShowAlertDialog] = useState(false);
     const [AIOutput,setAIOutput] = useState<string>('');

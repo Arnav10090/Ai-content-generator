@@ -10,7 +10,7 @@ import React from "react";
 const features = [
   {
     icon: <Bot />,
-    title: "25+ templates",
+    title: "17+ templates",
     description: "Responsive, and mobile-first project on the web",
   },
   {
