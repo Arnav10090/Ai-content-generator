@@ -90,9 +90,21 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
               <p className="text-gray-600 mb-4">{feature.description}</p>
-              <Link href="#" className="text-blue-600 font-semibold hover:underline">
-                Learn more <ArrowRight className="inline-block ml-1 h-4 w-4" />
-              </Link>
+              {isSignedIn ? (
+                <Link
+                  href="/dashboard"
+                  className="text-blue-600 font-semibold hover:underline cursor-pointer"
+                >
+                  Learn more <ArrowRight className="inline-block ml-1 h-4 w-4" />
+                </Link>
+              ) : (
+                <Link
+                  href="/sign-in"
+                  className="text-blue-600 font-semibold hover:underline cursor-pointer"
+                >
+                  Learn more <ArrowRight className="inline-block ml-1 h-4 w-4" />
+                </Link>
+              )}
             </div>
           ))}
         </div>
