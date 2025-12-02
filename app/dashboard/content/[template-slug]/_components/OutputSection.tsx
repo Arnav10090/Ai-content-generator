@@ -51,6 +51,7 @@ function OutputSection({AIOutput}:{AIOutput:string}) {
             variant="outline"
             onClick={handleCopy}
             className="border-2 border-violet-600 text-violet-700 hover:bg-violet-50 hover:border-violet-700 flex items-center gap-2 font-semibold cursor-pointer"
+            suppressHydrationWarning
           >
             <Copy className="w-4 h-4" />
             Copy

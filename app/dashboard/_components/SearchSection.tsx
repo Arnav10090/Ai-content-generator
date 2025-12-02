@@ -13,7 +13,8 @@ function SearchSection({onSearchInput}:{onSearchInput:any}) {
             type="text"
             placeholder="Search..."
             className="flex-1 outline-none bg-transparent text-lg text-gray-700"
-            onChange={(event) => onSearchInput(event.target.value)} 
+            onChange={(event) => onSearchInput(event.target.value)}
+            suppressHydrationWarning
           />
         </div>
       </div>

@@ -11,7 +11,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { Loader2Icon, Check } from 'lucide-react';
 
-const plans = [
+const getPlans = () => [
     {
         name: 'Free',
         price: '0$',
@@ -33,7 +33,7 @@ const plans = [
             'Unlimited Download & Copy',
             '1 Year of History',
         ],
-        planId: process.env.NEXT_PUBLIC_RAZORPAY_MONTHLY_PLAN_ID,
+        planId: typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PLAN_ID : '',
     },
     {
         name: 'Yearly',
@@ -45,7 +45,7 @@ const plans = [
             'Unlimited Download & Copy',
             '2 Years of History',
         ],
-        planId: process.env.NEXT_PUBLIC_RAZORPAY_YEARLY_PLAN_ID,
+        planId: typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PLAN_ID : '',
     },
 ];
 
@@ -53,6 +53,7 @@ const BillingPage = () => {
     const [userSubscription, setUserSubscription] = useState<any>(null);
     const [loading, setLoading] = useState<string | null>(null);
     const { user } = useUser();
+    const plans = getPlans();
 
     useEffect(() => {
         const checkUserSubscription = async () => {
@@ -84,7 +85,7 @@ const BillingPage = () => {
         }
     };
 
-    const saveSubscription = async (paymentId: string, subscriptionId: string, planId: string) => {
+    const saveSubscription = async (paymentId: string, subscriptionId: string, planName: 'monthly' | 'yearly') => {
         if (!user?.primaryEmailAddress?.emailAddress || !user.fullName) return null;
         try {
             const result = await db.insert(UserSubscription).values({
@@ -93,7 +94,7 @@ const BillingPage = () => {
                 active: true,
                 paymentId: paymentId,
                 joinDate: moment().toISOString(),
-                planType: planId === process.env.NEXT_PUBLIC_RAZORPAY_YEARLY_PLAN_ID ? 'Yearly' : 'Monthly',
+                planType: planName === 'yearly' ? 'Yearly' : 'Monthly',
             });
             return result;
         } catch (error) {
@@ -104,8 +105,8 @@ const BillingPage = () => {
 
     const onPayment = async (planName: 'monthly' | 'yearly') => {
         const planId = planName === 'monthly'
-            ? process.env.NEXT_PUBLIC_RAZORPAY_MONTHLY_PLAN_ID
-            : process.env.NEXT_PUBLIC_RAZORPAY_YEARLY_PLAN_ID;
+            ? process.env.NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PLAN_ID
+            : process.env.NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PLAN_ID;
 
         if (!planId) {
             console.error('Razorpay plan ID is not defined.');
@@ -121,7 +122,7 @@ const BillingPage = () => {
                 name: 'AI Content Generator',
                 description: `${planName.charAt(0).toUpperCase() + planName.slice(1)} Subscription`,
                 handler: async (response: any) => {
-                    await saveSubscription(response.razorpay_payment_id, sub.id, planId);
+                    await saveSubscription(response.razorpay_payment_id, sub.id, planName);
                     window.location.reload();
                 },
                 modal: {

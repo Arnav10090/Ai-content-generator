@@ -62,6 +62,7 @@ function FormSection({ selectedTemplate,userFormInput,loading }: PROPS) {
                 required={item.required}
                 onChange={handleInputChange}
                 value={formData?.[item.name] || ""}
+                suppressHydrationWarning
               />
             ) : item.field === "textarea" ? (
               <Textarea
@@ -69,6 +70,7 @@ function FormSection({ selectedTemplate,userFormInput,loading }: PROPS) {
                 required={item.required}
                 onChange={handleInputChange}
                 value={formData?.[item.name] || ""}
+                suppressHydrationWarning
               />
             ) : null}
           </div>

@@ -27,7 +27,10 @@ export async function POST(req, res) {
 
         return NextResponse.json(result);
     } catch (error) {
-        console.error('Razorpay API error:', error);
-        return NextResponse.json({ error: error.message || 'An internal server error occurred' }, { status: 500 });
+        console.error('Razorpay API error:', error.response?.data || error.message || error);
+        return NextResponse.json({ 
+            error: error.response?.data?.error?.description || error.message || 'An internal server error occurred',
+            details: error.response?.data || error.message
+        }, { status: 500 });
     }
 }
