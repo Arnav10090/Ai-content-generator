@@ -280,8 +280,6 @@ ai-content-generator/
 
 <div align="center">
 
-### ⭐ Star us on GitHub — it motivates us a lot!
-
 Made with ❤️ by [Arnav Tiwari](https://github.com/Arnav10090)
 
 [Back to Top](#-ai-content-generator)
