@@ -25,10 +25,7 @@
 - [Getting Started](#-getting-started)
 - [Environment Variables](#-environment-variables)
 - [Project Structure](#-project-structure)
-- [API Routes](#-api-routes)
-- [Screenshots](#-screenshots)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Key Features in Detail](#-key-features-in-detail)
 
 ---
 
