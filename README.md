@@ -257,49 +257,6 @@ ai-content-generator/
 └── package.json
 ```
 
----
-
-## 🔌 API Routes
-
-All API routes are located in `app/api/` and are secured with authentication.
-
-| Route | Method | Description | Cache |
-|-------|--------|-------------|-------|
-| `/api/check-subscription` | POST | Check user subscription status | 30s |
-| `/api/save-subscription` | POST | Save new subscription after payment | - |
-| `/api/get-total-usage` | POST | Get user's credit usage | 30s |
-| `/api/get-user-subscription` | POST | Get subscription details | 2min |
-| `/api/get-history` | POST | Fetch user's generation history | 30s |
-| `/api/create-subscription` | POST | Create Razorpay subscription | - |
-
-### Response Caching
-
-API responses are cached using HTTP headers for optimal performance:
-- **Subscription checks**: 30 seconds
-- **Usage data**: 30 seconds
-- **User subscription**: 2 minutes
-- **History**: 30 seconds
-
----
-
-## 📸 Screenshots
-
-> *Add your app screenshots here to showcase the UI*
-
-### Dashboard (Light Mode)
-![Dashboard Light](path/to/screenshot.png)
-
-### Dashboard (Dark Mode)
-![Dashboard Dark](path/to/screenshot.png)
-
-### Content Generation
-![Content Generation](path/to/screenshot.png)
-
-### History with Filters
-![History](path/to/screenshot.png)
-
----
-
 ## 🎨 Key Features in Detail
 
 ### Collapsible Sidebar
@@ -321,68 +278,14 @@ API responses are cached using HTTP headers for optimal performance:
 - **Pagination**: Adjustable rows per page (5, 10, 20, 50)
 - **Smart pagination**: Shows relevant page numbers with ellipsis
 
-### Performance Optimizations
-- API response caching (30s - 2min)
-- Request debouncing (300ms)
-- Lazy loading for heavy components
-- Optimized database queries
-- Server-side rendering where appropriate
-
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Use Tailwind CSS for styling
-- Maintain dark mode compatibility
-- Add proper error handling
-- Write clear commit messages
-- Test on multiple browsers
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - The React framework
-- [Clerk](https://clerk.com/) - Authentication made easy
-- [SambaNova](https://sambanova.ai/) - Powerful AI API
-- [Shadcn/ui](https://ui.shadcn.com/) - Beautiful components
-- [Neon](https://neon.tech/) - Serverless PostgreSQL
-
----
-
-## 📧 Support
-
-Having issues? We're here to help!
-
-- 📫 Email: support@aicontentgen.com
-- 🐛 [Report a Bug](https://github.com/yourusername/ai-content-generator/issues)
-- 💡 [Request a Feature](https://github.com/yourusername/ai-content-generator/issues)
-- 📖 [Documentation](https://docs.aicontentgen.com)
-
----
 
 <div align="center">
 
 ### ⭐ Star us on GitHub — it motivates us a lot!
 
-Made with ❤️ by [Your Name](https://github.com/yourusername)
+Made with ❤️ by [Arnav Tiwari](https://github.com/Arnav10090)
 
 [Back to Top](#-ai-content-generator)
 
