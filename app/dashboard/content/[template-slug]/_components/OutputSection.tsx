@@ -43,9 +43,9 @@ function OutputSection({AIOutput}:{AIOutput:string}) {
   };
 
   return (
-    <div className="bg-white rounded-lg border shadow p-0 relative">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700 shadow p-0 relative">
       <div className="flex justify-between items-center px-6 pt-6 pb-4">
-        <h2 className="font-semibold text-lg">Your Result</h2>
+        <h2 className="font-semibold text-lg text-gray-900 dark:text-white">Your Result</h2>
         <div className="relative">
           <Button
             variant="outline"

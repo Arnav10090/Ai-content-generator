@@ -7,7 +7,7 @@ import  Templates  from '@/app/(data)/Templates'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { generateSambaNovaContent } from '@/app/actions';
 import { useState } from "react";
 import { db } from '@/utils/db'
 import { useUser } from '@clerk/nextjs'
@@ -64,11 +64,7 @@ function CreateNewContent({params}:props) {
       }
       const SelectedPrompt = selectedTemplate?.aiPrompt;
       const FinalAIPrompt = JSON.stringify(formData) + ", " + SelectedPrompt + ". Return the result as HTML only, using tags like <b>, <ul>, <li>, <p> as appropriate for rich text editors. Do not use markdown, code blocks, or RTF. Do not wrap everything in a single <p> or <ul> unless it is semantically correct. The output should be ready to render in a WYSIWYG editor.";
-      const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY!);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
-      const result = await model.generateContent(FinalAIPrompt);
-      const response = await result.response;
-      const text = response.text();
+      const text = await generateSambaNovaContent(FinalAIPrompt);
       setAIOutput(text);
       await SaveInDb(JSON.stringify(formData),selectedTemplate?.slug,text)
       setLoading(false);
@@ -109,7 +105,7 @@ function CreateNewContent({params}:props) {
       </AlertDialog>
 
       <Link href='/dashboard'>
-      <Button className='bg-blue-700 hover:bg-blue-600 cursor-pointer'><ArrowLeft/> Back</Button>
+      <Button className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white cursor-pointer"><ArrowLeft/> Back</Button>
       </Link>
     <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-5'>
       <FormSection selectedTemplate={selectedTemplate} 

@@ -119,4 +119,38 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Razorpay Modal Backdrop Override */
+  .razorpay-container {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  html.dark .razorpay-container {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Toast UI Editor Dark Mode */
+  html.dark .toastui-editor-defaultUI,
+  html.dark .toastui-editor-contents,
+  html.dark .ProseMirror {
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
+  }
+
+  html.dark .toastui-editor-contents * {
+    color: #ffffff !important;
+  }
+
+  html.dark .toastui-editor-toolbar {
+    background-color: #111827 !important;
+    border-bottom: 1px solid #374151 !important;
+  }
+
+  html.dark .toastui-editor-toolbar button {
+    color: #9ca3af !important;
+  }
+
+  html.dark .toastui-editor-toolbar button:hover {
+    background-color: #374151 !important;
+  }
 }

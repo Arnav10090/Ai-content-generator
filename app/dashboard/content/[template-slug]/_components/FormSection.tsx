@@ -33,7 +33,7 @@ function FormSection({ selectedTemplate,userFormInput,loading }: PROPS) {
     }
 
   return (
-    <div className="p-5 shadow-md border rounded-lg max-w-md mx-auto bg-white">
+    <div className="p-5 shadow-md border dark:border-gray-700 rounded-lg max-w-md mx-auto bg-white dark:bg-gray-800">
       {/* @ts-ignore */}
       <div className="flex flex-col items-center mb-4">
         <Image
@@ -43,17 +43,17 @@ function FormSection({ selectedTemplate,userFormInput,loading }: PROPS) {
           height={70}
           className="mb-2"
         />
-        <h2 className="font-bold text-2xl mb-1 text-blue-700 text-center">
+        <h2 className="font-bold text-2xl mb-1 text-blue-700 dark:text-blue-400 text-center">
           {selectedTemplate?.name}
         </h2>
-        <p className="text-gray-800 text-sm text-center mb-4">
+        <p className="text-gray-800 dark:text-gray-300 text-sm text-center mb-4">
           {selectedTemplate?.desc}
         </p>
       </div>
       <form className="mt-6" onSubmit={onSubmit}>
         {selectedTemplate?.form?.map((item, index) => (
           <div key={index} className="my-2 flex flex-col gap-2 mb-7">
-            <label className="mb-1 font-bold text-gray-700">
+            <label className="mb-1 font-bold text-gray-700 dark:text-gray-200">
               {item.label}
             </label>
             {item.field === "input" ? (
@@ -75,7 +75,7 @@ function FormSection({ selectedTemplate,userFormInput,loading }: PROPS) {
             ) : null}
           </div>
         ))}
-        <Button className="w-full p-6 bg-blue-700 hover:bg-blue-600 cursor-pointer" type="submit" disabled={loading}> {loading&&<Loader2Icon className='animate-spin h-5 w-5 text-white'/>} Generate Content</Button>
+        <Button className="w-full p-6 bg-blue-700 dark:bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-600 text-white cursor-pointer" type="submit" disabled={loading}> {loading&&<Loader2Icon className='animate-spin h-5 w-5 text-white'/>} Generate Content</Button>
       </form>
     </div>
   );

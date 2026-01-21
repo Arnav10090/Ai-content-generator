@@ -2,21 +2,11 @@
 import { Button } from '@/components/ui/button';
 import { useUser } from '@clerk/nextjs';
 import React, { useContext, useEffect, useState } from 'react'
-import { db } from '@/utils/db';
-import { AIOutput, UserSubscription } from '@/utils/schema';
-import { eq, desc } from 'drizzle-orm';
+import axios from 'axios';
 import { TotalUsageContext } from '@/app/(context)/TotalUsageContext';
 import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext';
 import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext';
 
-export interface HISTORY {
-  id: number;
-  formData: string;
-  templateSlug: string;
-  aiResponse: string | null;
-  createdBy: string;
-  createdAt: string | null;
-}
 
 function UsageTrack() {
   const { user } = useUser();
@@ -32,8 +22,13 @@ function UsageTrack() {
 
   useEffect(() => {
     if (user && isMounted) {
-      GetData();
-      IsUserSubscribed();
+      // Debounce the API calls to prevent excessive requests
+      const timeoutId = setTimeout(() => {
+        GetData();
+        IsUserSubscribed();
+      }, 300); // Wait 300ms before makingAPI calls
+
+      return () => clearTimeout(timeoutId);
     }
   }, [user, updateCreditUsage, isMounted]);
 
@@ -42,14 +37,11 @@ function UsageTrack() {
     if (!email) return;
 
     try {
-      const result = await db.select().from(UserSubscription)
-        .where(eq(UserSubscription.email, email))
-        .orderBy(desc(UserSubscription.id));
+      const response = await axios.post('/api/get-user-subscription', { email });
       
-      if (result && result.length > 0) {
+      if (response.data.hasSubscription) {
         setUserSubscription(true);
-        const fetchedPlan = result[0].planType || 'Free';
-        setPlan(fetchedPlan);
+        setPlan(response.data.planType);
       } else {
         setPlan('Free');
       }
@@ -62,15 +54,13 @@ function UsageTrack() {
   const GetData = async () => {
     const email = user?.primaryEmailAddress?.emailAddress;
     if (email) {
-      const result: HISTORY[] = await db.select().from(AIOutput)
-        .where(eq(AIOutput.createdBy, email));
-      
-      let total = 0;
-      result.forEach(element => {
-        total = total + (element.aiResponse ? element.aiResponse.split(/\s+/).length : 0);
-      });
-
-      setTotalUsage(total)
+      try {
+        const response = await axios.post('/api/get-total-usage', { email });
+        setTotalUsage(response.data.totalUsage || 0);
+      } catch (error) {
+        console.error("Failed to get usage data:", error);
+        setTotalUsage(0);
+      }
     }
   }
 
@@ -104,9 +94,9 @@ function UsageTrack() {
 
   return (
     <div className='m-5'>
-      <div className='bg-primary text-white p-3 rounded-lg'>
-        <h2 className='font-medium'>Credits</h2>
-        <div className='h-2 bg-[#9981f9] w-full rounded-full mt-3'>
+      <div className='bg-primary dark:bg-gray-700 text-white p-3 rounded-lg'>
+        <h2 className='font-medium text-white'>Credits</h2>
+        <div className='h-2 bg-[#9981f9] dark:bg-gray-600 w-full rounded-full mt-3'>
           <div
             className='h-2 bg-white rounded-full'
             style={{
@@ -114,7 +104,7 @@ function UsageTrack() {
             }}
           ></div>
         </div>
-        <h2 className='text-sm my-2'>{totalUsage.toLocaleString('en-IN')}/{creditLimit.toLocaleString('en-IN')} Credits used</h2>
+        <h2 className='text-sm my-2 text-white'>{totalUsage.toLocaleString('en-IN')}/{creditLimit.toLocaleString('en-IN')} Credits used</h2>
       </div>
       <Button 
         variant='outline' 
