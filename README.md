@@ -277,6 +277,15 @@ ai-content-generator/
 
 ---
 
+## 👨‍💻 Author
+
+**Arnav Tiwari**
+
+- GitHub: [@Arnav10090](https://github.com/Arnav10090)
+- LinkedIn: [Connect with me](https://www.linkedin.com/in/arnav-tiwari-063278253/)
+
+---
+
 
 <div align="center">
 
