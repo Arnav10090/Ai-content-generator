@@ -1,4 +1,5 @@
 "use client"
+// Force re-render to fix hydration mismatch
 
 import { FileClock, Home, Settings, WalletCards, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
@@ -44,9 +45,8 @@ function SideNav({ isCollapsed, setIsCollapsed }: SideNavProps) {
     }, [])
 
     return (
-        <div className={`h-screen relative p-5 shadow-sm border bg-white dark:bg-gray-900 dark:border-gray-700 transition-all duration-300 ${
-            isCollapsed ? 'w-20' : 'w-64'
-        }`}>
+        <div className={`h-screen relative p-5 shadow-sm border bg-white dark:bg-gray-900 dark:border-gray-700 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
+            }`}>
             {/* Toggle Button */}
             <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
@@ -64,33 +64,32 @@ function SideNav({ isCollapsed, setIsCollapsed }: SideNavProps) {
                     <Image src="/logo.svg" alt="Logo" width={120} height={80} className="transition-all duration-300" />
                 )}
             </div>
-            
+
             <hr className='border-gray-500 dark:border-gray-600 w-full my-4' />
-            
+
             {/* Menu Items */}
             <div className='mt-3'>
                 {menuList.map((menu, index) => {
                     // Check if this menu item should be active
-                    const isActive = menu.path === '/dashboard' 
+                    const isActive = menu.path === '/dashboard'
                         ? (path === '/dashboard' || path.startsWith('/dashboard/content'))
                         : path === menu.path;
-                    
+
                     return (
                         <Link
                             href={menu.path}
                             key={index}
-                            className={`flex gap-2 mb-2 p-3 hover:bg-blue-700 dark:hover:bg-blue-500 hover:text-white rounded-lg cursor-pointer items-center transition-all duration-200 ${
-                                isActive ? 'bg-blue-700 dark:bg-blue-500 text-white' : 'dark:text-gray-200'
-                            } ${isCollapsed ? 'justify-center' : ''}`}
+                            className={`flex gap-2 mb-2 p-3 hover:bg-blue-700 dark:hover:bg-blue-500 hover:text-white rounded-lg cursor-pointer items-center transition-all duration-200 ${isActive ? 'bg-blue-700 dark:bg-blue-500 text-white' : 'dark:text-gray-200'
+                                } ${isCollapsed ? 'justify-center' : ''}`}
                             title={isCollapsed ? menu.name : ''}
                         >
                             <menu.icon className="flex-shrink-0" />
-                            {!isCollapsed && <h2 className="whitespace-nowrap">{menu.name}</h2>}
+                            {!isCollapsed && <h2 className="whitespace-nowrap text-xl">{menu.name}</h2>}
                         </Link>
                     );
                 })}
             </div>
-            
+
             {/* Usage Track */}
             {!isCollapsed && (
                 <div className='absolute bottom-10 left-0 w-full transition-opacity duration-300'>
