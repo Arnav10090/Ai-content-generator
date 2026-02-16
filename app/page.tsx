@@ -34,7 +34,7 @@ export default function Home() {
   const { isSignedIn } = useUser();
 
   return (
-    <div className="bg-white">
+    <div className="bg-white landing-page">
       <header className="p-4 flex justify-between items-center border-b">
         <div className="flex items-center gap-2">
           <Image src="/logo.svg" width={50} height={50} alt="logo" />

@@ -117,7 +117,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background;
+    /* Ensure a reliable text color fallback if CSS variables or oklch() aren't applied
+       Uses --foreground when available, otherwise falls back to a dark gray. */
+    color: var(--foreground, #111827);
+    /* Also provide a reliable background color fallback */
+    background-color: var(--background, #ffffff);
   }
 
   /* Razorpay Modal Backdrop Override */
@@ -152,5 +157,26 @@
 
   html.dark .toastui-editor-toolbar button:hover {
     background-color: #374151 !important;
+  }
+
+  /* Landing page override: make any intentionally white text render as the primary blue
+     so elements that use `text-white` on the landing page remain visible instead of washed out. */
+  .landing-page .text-white {
+    color: var(--primary, #2563eb) !important;
+  }
+
+  /* Ensure the landing page main heading renders in the primary blue and
+     remove any faded duplicate pseudo-elements that may be layered behind it. */
+  .landing-page h1,
+  .landing-page h1 * {
+    color: var(--primary, #2563eb) !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: var(--primary, #2563eb) !important;
+  }
+
+  .landing-page h1::before,
+  .landing-page h1::after {
+    display: none !important;
+    content: none !important;
   }
 }
