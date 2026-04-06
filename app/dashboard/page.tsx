@@ -14,9 +14,10 @@ function dashboard() {
 
       <div className="flex justify-end px-10 pt-5">
         <div className="flex items-center gap-2">
-          <label className="text-gray-500 font-medium">Show Cards:</label>
+          <label className="font-medium text-gray-600 dark:text-gray-300">Show Cards:</label>
           <select
-            className="bg-white border rounded-md px-3 py-1 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            className="cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1 text-gray-900 shadow-sm outline-none transition-colors hover:border-gray-400 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:border-gray-500"
+            style={{ colorScheme: 'light dark' }}
             onChange={(e) => setLimit(Number(e.target.value))}
             value={limit}
           >
