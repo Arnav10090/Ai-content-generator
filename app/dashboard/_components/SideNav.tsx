@@ -3,7 +3,7 @@
 
 import { FileClock, Home, Settings, WalletCards, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import UsageTrack from './UsageTrack'
@@ -13,36 +13,42 @@ interface SideNavProps {
     setIsCollapsed: (collapsed: boolean) => void;
 }
 
+const menuList = [{
+    name: 'Home',
+    icon: Home,
+    path: '/dashboard'
+},
+{
+    name: 'History',
+    icon: FileClock,
+    path: '/dashboard/history'
+},
+{
+    name: 'Billing',
+    icon: WalletCards,
+    path: '/dashboard/billing'
+},
+{
+    name: 'Setting',
+    icon: Settings,
+    path: '/dashboard/setting'
+},
+]
+
 function SideNav({ isCollapsed, setIsCollapsed }: SideNavProps) {
     const [isMounted, setIsMounted] = useState(false);
-
-    const menuList = [{
-        name: 'Home',
-        icon: Home,
-        path: '/dashboard'
-    },
-    {
-        name: 'History',
-        icon: FileClock,
-        path: '/dashboard/history'
-    },
-    {
-        name: 'Billing',
-        icon: WalletCards,
-        path: '/dashboard/billing'
-    },
-    {
-        name: 'Setting',
-        icon: Settings,
-        path: '/dashboard/setting'
-    },
-    ]
-
     const path = usePathname();
+    const router = useRouter();
 
     useEffect(() => {
         setIsMounted(true);
     }, [])
+
+    useEffect(() => {
+        menuList.forEach((menu) => {
+            router.prefetch(menu.path);
+        });
+    }, [router]);
 
     return (
         <div className={`h-screen relative p-5 shadow-sm border bg-white dark:bg-gray-900 dark:border-gray-700 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
@@ -79,6 +85,9 @@ function SideNav({ isCollapsed, setIsCollapsed }: SideNavProps) {
                         <Link
                             href={menu.path}
                             key={index}
+                            prefetch
+                            onMouseEnter={() => router.prefetch(menu.path)}
+                            onFocus={() => router.prefetch(menu.path)}
                             className={`flex gap-2 mb-2 p-3 hover:bg-blue-700 dark:hover:bg-blue-500 hover:text-white rounded-lg cursor-pointer items-center transition-all duration-200 ${isActive ? 'bg-blue-700 dark:bg-blue-500 text-white' : 'dark:text-gray-200'
                                 } ${isCollapsed ? 'justify-center' : ''}`}
                             title={isCollapsed ? menu.name : ''}

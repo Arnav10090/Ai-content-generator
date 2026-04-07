@@ -7,6 +7,7 @@ import { TotalUsageContext } from '@/app/(context)/TotalUsageContext';
 import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext';
 import BillingWarning from './_components/BillingWarning';
 import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext';
+import DashboardPageTransition from './_components/DashboardPageTransition';
 
 function layout({
     children,
@@ -36,7 +37,9 @@ function layout({
                             <Header />
                             <BillingWarning />
                             <div className="flex-1 overflow-y-auto bg-slate-100 dark:bg-gray-950">
-                                {children}
+                                <DashboardPageTransition>
+                                    {children}
+                                </DashboardPageTransition>
                             </div>
                         </div>
                     </div>

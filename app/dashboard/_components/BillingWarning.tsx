@@ -31,7 +31,7 @@ function BillingWarning() {
                 <p className="text-sm">Please upgrade your plan to continue generating new content.</p>
             </div>
         </div>
-        <Link href="/dashboard/billing">
+        <Link href="/dashboard/billing" prefetch>
             <Button variant="outline" className="bg-yellow-500 hover:bg-yellow-600 text-white cursor-pointer">Upgrade</Button>
         </Link>
     </div>

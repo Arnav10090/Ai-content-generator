@@ -6,6 +6,7 @@ import axios from 'axios';
 import { TotalUsageContext } from '@/app/(context)/TotalUsageContext';
 import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext';
 import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext';
+import { useRouter } from 'next/navigation';
 
 
 function UsageTrack() {
@@ -13,12 +14,17 @@ function UsageTrack() {
   const { totalUsage, setTotalUsage } = useContext(TotalUsageContext);
   const { userSubscription, setUserSubscription } = useContext(UserSubscriptionContext);
   const {updateCreditUsage, setUpdateCreditUsage} = useContext(UpdateCreditUsageContext);
+  const router = useRouter();
   const [plan, setPlan] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    router.prefetch('/dashboard/billing');
+  }, [router]);
 
   useEffect(() => {
     if (user && isMounted) {
@@ -109,7 +115,7 @@ function UsageTrack() {
       <Button 
         variant='outline' 
         className='w-full my-3 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md'
-        onClick={() => window.location.href = '/dashboard/billing'}
+        onClick={() => router.push('/dashboard/billing')}
       >
         {userSubscription ? 'Manage Subscription' : 'Upgrade'}
       </Button>

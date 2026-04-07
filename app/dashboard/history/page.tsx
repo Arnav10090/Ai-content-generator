@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Templates from '@/app/(data)/Templates';
-import HistoryTable from './HistoryTable';
+import HistoryTable, { type HistoryRow } from './HistoryTable';
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
 
@@ -13,22 +13,35 @@ function getTemplateMeta(slug: string) {
 
 export default function HistoryPage() {
   const { user, isLoaded } = useUser();
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHistory = async () => {
       if (!isLoaded) return;
-      
-      if (!user?.primaryEmailAddress?.emailAddress) {
+
+      const email = user?.primaryEmailAddress?.emailAddress;
+      if (!email) {
         setLoading(false);
         return;
       }
 
+      const cacheKey = `history:${email}`;
+
       try {
-        setLoading(true);
+        const cachedHistory = sessionStorage.getItem(cacheKey);
+        if (cachedHistory) {
+          const parsedRows = JSON.parse(cachedHistory) as HistoryRow[];
+          if (parsedRows.length > 0) {
+            setRows(parsedRows);
+            setLoading(false);
+          }
+        } else {
+          setLoading(true);
+        }
+
         const response = await axios.post('/api/get-history', {
-          email: user.primaryEmailAddress.emailAddress
+          email
         });
 
         const history = response.data.history || [];
@@ -46,9 +59,12 @@ export default function HistoryPage() {
         });
 
         setRows(mappedRows);
+        sessionStorage.setItem(cacheKey, JSON.stringify(mappedRows));
       } catch (error) {
         console.error('Error fetching history:', error);
-        setRows([]);
+        if (!sessionStorage.getItem(cacheKey)) {
+          setRows([]);
+        }
       } finally {
         setLoading(false);
       }
