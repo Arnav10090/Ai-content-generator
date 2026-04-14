@@ -72,3 +72,6 @@ Thumbs.db
 # pnpm-lock.yaml
 # clerk configuration (can include secrets)
 /.clerk/
+
+# Interview preparation documents
+INTERVIEW_QA.md
