@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { Search } from 'lucide-react'
 
@@ -14,6 +15,7 @@ function SearchSection({onSearchInput}:{onSearchInput:any}) {
             placeholder="Search Templates.."
             className="outline-none bg-transparent ml-2 w-full text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             onChange={(event) => onSearchInput(event.target.value)}
+            suppressHydrationWarning
           />
         </div>
       </div>

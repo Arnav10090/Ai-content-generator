@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import Templates from '@/app/(data)/Templates'
 import TemplateCard from './TemplateCard'

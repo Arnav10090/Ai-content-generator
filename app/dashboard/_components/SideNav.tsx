@@ -63,13 +63,13 @@ function SideNav({ isCollapsed, setIsCollapsed }: SideNavProps) {
             </button>
 
             {/* Logo */}
-            <div className='flex justify-center'>
+            <Link href="/" className='flex justify-center cursor-pointer'>
                 {isCollapsed ? (
                     <Image src="/logo.svg" alt="Logo" width={40} height={40} className="transition-all duration-300" />
                 ) : (
                     <Image src="/logo.svg" alt="Logo" width={120} height={80} className="transition-all duration-300" />
                 )}
-            </div>
+            </Link>
 
             <hr className='border-gray-500 dark:border-gray-600 w-full my-4' />
 
