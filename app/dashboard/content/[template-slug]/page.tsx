@@ -9,12 +9,12 @@ import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { generateSambaNovaContent } from '@/app/actions';
 import { useState, useContext } from "react";
-import axios from 'axios';
 import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'  // ← ADD THIS
 import { TotalUsageContext } from '@/app/(context)/TotalUsageContext'
 import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext';
 import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext';
-import { useRouter } from 'next/navigation'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +25,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+
+// REMOVED: db, moment, AIOutputTable imports
 
 interface props {
   params: Promise<{
@@ -106,11 +108,8 @@ function CreateNewContent({ params }: props) {
         </Button>
       </Link>
       <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-5'>
-        <FormSection
-          selectedTemplate={selectedTemplate}
-          userFormInput={(v: any) => GenereteAIContent(v)}
-          loading={loading || !isLoaded}
-        />
+        <FormSection selectedTemplate={selectedTemplate}
+          userFormInput={(v: any) => GenereteAIContent(v)} loading={loading || !isLoaded} />
         <div className='col-span-2'>
           <OutputSection AIOutput={AIOutput} />
         </div>
