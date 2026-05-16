@@ -29,19 +29,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-interface props{
-    params:{
-        'template-slug':string
-    }
+interface props {
+  params: Promise<{
+    'template-slug': string
+  }>
 }
 
 function isPromise<T>(value: T | Promise<T>): value is Promise<T> {
     return typeof (value as any)?.then === 'function';
 }
 
-function CreateNewContent({params}:props) {
-    const unwrappedParams = isPromise(params) ? use(params) : params;
-    const selectedTemplate:Template|undefined = Templates?.find((item) => item.slug == unwrappedParams['template-slug']);
+function CreateNewContent({ params }: props) {
+  const unwrappedParams = use(params);  // use() already imported
+  const selectedTemplate = Templates?.find(
+    (item) => item.slug == unwrappedParams['template-slug']
+  );
     const[loading,setLoading] = useState(false);
     const [showAlertDialog, setShowAlertDialog] = useState(false);
     const [AIOutput,setAIOutput] = useState<string>('');
