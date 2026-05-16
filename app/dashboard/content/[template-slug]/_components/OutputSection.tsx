@@ -1,15 +1,29 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import '@toast-ui/editor/dist/toastui-editor.css';
 import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 
-const Editor = dynamic(() => import('@toast-ui/react-editor').then(mod => mod.Editor), { ssr: false });
+const Editor = dynamic(
+  () => import('@toast-ui/react-editor').then(mod => mod.Editor),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="h-[400px] flex items-center justify-center text-gray-400">
+        Loading editor...
+      </div>
+    )
+  }
+);
 
 function OutputSection({AIOutput}:{AIOutput:string}) {
   const editorRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
+
+  // Load CSS client-side only to prevent SSR crash
+  useEffect(() => {
+    import('@toast-ui/editor/dist/toastui-editor.css');
+  }, []);
 
   useEffect(() => {
     if (editorRef.current && AIOutput) {
