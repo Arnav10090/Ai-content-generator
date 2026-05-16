@@ -3,11 +3,13 @@
 import { headers } from "next/headers";
 
 export async function generateSambaNovaContent(prompt: string) {
-    const apiKey = process.env.SAMBANOVA_API_KEY;
-
-    if (!apiKey) {
-        throw new Error("SAMBANOVA_API_KEY is not defined in environment variables");
-    }
+  const apiKey = process.env.SAMBANOVA_API_KEY;
+  
+  console.log('API Key exists:', !!apiKey); // this shows in Vercel logs
+  
+  if (!apiKey) {
+    throw new Error("SAMBANOVA_API_KEY is not set");
+  }
 
     const response = await fetch("https://api.sambanova.ai/v1/chat/completions", {
         method: "POST",
