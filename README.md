@@ -103,7 +103,7 @@
 - **[Drizzle ORM](https://orm.drizzle.team/)** - TypeScript ORM
 - **[PostgreSQL](https://www.postgresql.org/)** - Relational database (via Neon)
 - **[Clerk](https://clerk.com/)** - Authentication & user management
-- **[SambaNova AI API](https://sambanova.ai/)** - AI content generation
+- **[Groq API](https://groq.com/)** - AI content generation
 
 ### Payments
 - **[Razorpay](https://razorpay.com/)** - Payment processing
@@ -123,7 +123,7 @@
 - PostgreSQL database (we recommend [Neon](https://neon.tech/))
 - Clerk account for authentication
 - Razorpay account for payments
-- SambaNova AI API key
+- Groq API key
 
 ### Installation
 
@@ -180,8 +180,8 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_DRIZZLE_DB_URL=your_postgres_connection_string
 DRIZZLE_DB_URL=your_postgres_connection_string
 
-# SambaNova AI API
-NEXT_PUBLIC_SAMBANOVA_API_KEY=your_sambanova_api_key
+# Groq API
+GROQ_API_KEY=your_groq_api_key
 
 # Razorpay Payment Gateway
 NEXT_PUBLIC_RAZORPAY_KEY_ID=your_razorpay_key_id
@@ -198,7 +198,7 @@ NEXT_PUBLIC_YEARLY_PLAN_ID=your_yearly_plan_id
 |---------|-----|---------|
 | **Clerk** | [clerk.com](https://clerk.com) | User authentication & management |
 | **Neon** | [neon.tech](https://neon.tech) | PostgreSQL database hosting |
-| **SambaNova** | [sambanova.ai](https://sambanova.ai) | AI content generation API |
+| **Groq** | [groq.com](https://groq.com) | AI content generation API |
 | **Razorpay** | [razorpay.com](https://razorpay.com) | Payment processing |
 
 ---

@@ -1,81 +1,41 @@
 'use server'
 
-import { headers } from "next/headers";
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL = "llama-3.1-8b-instant";
 
-export async function generateSambaNovaContent(prompt: string) {
-  const apiKey = process.env.SAMBANOVA_API_KEY;
-  
-  console.log('API Key exists:', !!apiKey); // this shows in Vercel logs
-  
+export async function generateGroqContent(prompt: string) {
+  const apiKey = process.env.GROQ_API_KEY;
+
   if (!apiKey) {
-    throw new Error("SAMBANOVA_API_KEY is not set");
+    throw new Error("GROQ_API_KEY is not set");
   }
 
-    const response = await fetch("https://api.sambanova.ai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${apiKey}`,
+  const response = await fetch(GROQ_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful AI assistant.",
         },
-        body: JSON.stringify({
-            stream: true,
-            model: "Meta-Llama-3.1-8B-Instruct",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful AI assistant."
-                },
-                {
-                    role: "user",
-                    content: prompt
-                }
-            ]
-        })
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`SambaNova API Error: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    // Handle stream or just full response? 
-    // The fetch above sets stream: true, but for simplicity in this replacement, 
-    // let's try to handle it as a simple non-stream response first if possible, 
-    // or handle the stream parsing. 
-    // To match existing Google logic which was awaiting result.response.text(), 
-    // it might be easier to use stream: false for now.
-
-    return handleNonStreamResponse(prompt, apiKey);
-}
-
-async function handleNonStreamResponse(prompt: string, apiKey: string) {
-    const response = await fetch("https://api.sambanova.ai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${apiKey}`,
+        {
+          role: "user",
+          content: prompt,
         },
-        body: JSON.stringify({
-            stream: false,
-            model: "Meta-Llama-3.1-8B-Instruct",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful assistant"
-                },
-                {
-                    role: "user",
-                    content: prompt
-                }
-            ]
-        })
-    });
+      ],
+    }),
+  });
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`SambaNova API Error: ${response.status} ${response.statusText} - ${errorText}`);
-    }
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Groq API Error: ${response.status} ${response.statusText} - ${errorText}`);
+  }
 
-    const data = await response.json();
-    return data.choices[0]?.message?.content || "";
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || "";
 }

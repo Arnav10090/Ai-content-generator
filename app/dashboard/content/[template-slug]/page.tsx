@@ -7,7 +7,7 @@ import Templates from '@/app/(data)/Templates'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { generateSambaNovaContent } from '@/app/actions';
+import { generateGroqContent } from '@/app/actions';
 import { useState, useContext } from "react";
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
@@ -61,7 +61,7 @@ function CreateNewContent({ params }: props) {
     }
     const SelectedPrompt = selectedTemplate?.aiPrompt;
     const FinalAIPrompt = JSON.stringify(formData) + ", " + SelectedPrompt + ". Return the result as HTML only, using tags like <b>, <ul>, <li>, <p> as appropriate for rich text editors. Do not use markdown, code blocks, or RTF. Do not wrap everything in a single <p> or <ul> unless it is semantically correct. The output should be ready to render in a WYSIWYG editor.";
-    const text = await generateSambaNovaContent(FinalAIPrompt);
+    const text = await generateGroqContent(FinalAIPrompt);
     setAIOutput(text);
     await SaveInDb(JSON.stringify(formData), selectedTemplate?.slug, text);
     setLoading(false);
